@@ -1,8 +1,10 @@
 package com.example.labsprojectemt.web;
 
-import com.example.labsprojectemt.model.Country;
-import com.example.labsprojectemt.model.dto.CountryDto;
-import com.example.labsprojectemt.service.CountryService;
+import com.example.labsprojectemt.domain.Country;
+import com.example.labsprojectemt.domain.dto.CreateCountryDto;
+import com.example.labsprojectemt.domain.dto.DisplayCountryDto;
+import com.example.labsprojectemt.service.application.CountryApplicationService;
+import com.example.labsprojectemt.service.domain.CountryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -14,21 +16,21 @@ import java.util.List;
 @RequestMapping("/api/countries")
 @Tag(name = "Country API", description = "Endpoints for managing Countries") // OpenAPI tag
 public class CountryController {
-    private final CountryService countryService;
+    private final CountryApplicationService countryService;
 
-    public CountryController(CountryService countryService) {
+    public CountryController(CountryApplicationService countryService) {
         this.countryService = countryService;
     }
 
     @Operation(summary = "Get all countries", description = "Retrieves a list of all available categories.")
     @GetMapping
-    public List<Country> findAll() {
+    public List<DisplayCountryDto> findAll() {
         return countryService.findAll();
     }
 
     @Operation(summary = "Get category by ID", description = "Finds a category by its ID.")
     @GetMapping("/{id}")
-    public ResponseEntity<Country> findById(@PathVariable Long id) {
+    public ResponseEntity<DisplayCountryDto> findById(@PathVariable Long id) {
         return countryService.findById(id)
                 .map(category -> ResponseEntity.ok().body(category))
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -36,8 +38,8 @@ public class CountryController {
 
     @Operation(summary = "Add a new country", description = "Creates a new country.")
     @PostMapping("/add")
-    public ResponseEntity<Country> save(@RequestBody CountryDto countryDto) {
-        return countryService.save(countryDto.toCountry())
+    public ResponseEntity<DisplayCountryDto> save(@RequestBody CreateCountryDto createCountryDto) {
+        return countryService.save(createCountryDto)
                 .map(category -> ResponseEntity.ok().body(category))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

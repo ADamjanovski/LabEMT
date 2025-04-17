@@ -1,6 +1,6 @@
 package com.example.labsprojectemt.repository;
 
-import com.example.labsprojectemt.model.Accommodation;
+import com.example.labsprojectemt.domain.Accommodation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

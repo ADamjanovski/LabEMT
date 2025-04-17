@@ -1,9 +1,12 @@
 package com.example.labsprojectemt.web;
 
 
-import com.example.labsprojectemt.model.dto.HostDto;
-import com.example.labsprojectemt.service.CountryService;
-import com.example.labsprojectemt.service.HostService;
+import com.example.labsprojectemt.domain.dto.CreateHostDto;
+import com.example.labsprojectemt.domain.dto.DisplayHostDto;
+import com.example.labsprojectemt.service.application.CountryApplicationService;
+import com.example.labsprojectemt.service.application.HostApplicationService;
+import com.example.labsprojectemt.service.domain.CountryService;
+import com.example.labsprojectemt.service.domain.HostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -17,24 +20,23 @@ import java.util.stream.Collectors;
 @Tag(name = "Host API", description = "Endpoints for managing Hosts") // OpenAPI tag
 public class HostController {
 
-    private final HostService hostService;
-    private final CountryService countryService;
+    private final HostApplicationService hostService;
+    private final CountryApplicationService countryService;
 
-    public HostController(HostService hostService, CountryService countryService) {
+    public HostController(HostApplicationService hostService, CountryApplicationService countryService) {
         this.hostService = hostService;
         this.countryService = countryService;
     }
     @Operation(summary = "Get all products", description = "Retrieves a list of all available products.")
     @GetMapping
-    public List<HostDto> findAll() {
-        return hostService.findAll().stream().map(HostDto::from).collect(Collectors.toList());
+    public List<DisplayHostDto> findAll() {
+        return hostService.findAll();
     }
 
     @Operation(summary = "Get product by ID", description = "Finds a product by its ID.")
     @GetMapping("/{id}")
-    public ResponseEntity<HostDto> findById(@PathVariable Long id) {
+    public ResponseEntity<DisplayHostDto> findById(@PathVariable Long id) {
         return hostService.findById(id)
-                .map(HostDto::from)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -44,9 +46,8 @@ public class HostController {
             description = "Creates a new product based on the given ProductDto."
     )
     @PostMapping("/add")
-    public ResponseEntity<HostDto> save(@RequestBody HostDto createProductDto) {
-        return hostService.save(createProductDto.toHost(countryService.findById(createProductDto.country()).orElseThrow()))
-                .map(HostDto::from)
+    public ResponseEntity<DisplayHostDto> save(@RequestBody CreateHostDto createProductDto) {
+        return hostService.save(createProductDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
