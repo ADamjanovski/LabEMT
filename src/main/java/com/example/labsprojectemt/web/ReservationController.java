@@ -1,6 +1,7 @@
 package com.example.labsprojectemt.web;
 
 import com.example.labsprojectemt.domain.User;
+import com.example.labsprojectemt.domain.dto.CategoryReservationStatistic;
 import com.example.labsprojectemt.domain.dto.CreateReservationDto;
 import com.example.labsprojectemt.domain.dto.DisplayReservationDto;
 import com.example.labsprojectemt.service.application.AccommodationApplicationService;
@@ -47,14 +48,20 @@ public class ReservationController {
             description = "Creates a new reservation based on the given reservationdto."
     )
     @PostMapping("/add")
+    @ApiResponse(responseCode = "500", description = "Accommodation already reserved.")
     public ResponseEntity<DisplayReservationDto> save(@RequestBody CreateReservationDto createProductDto, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
 
-        if(accommodationApplicationService.findById(createProductDto.accommodation()).isPresent()){
-            return reservationService.save(createProductDto,user)
-                    .map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.notFound().build());
+        try{
+            if(accommodationApplicationService.findById(createProductDto.accommodation()).isPresent()){
+                return reservationService.save(createProductDto,user)
+                        .map(ResponseEntity::ok)
+                        .orElseGet(() -> ResponseEntity.notFound().build());
+            }
+        }catch (AccommodationAlreadyReserved e){
+            return  ResponseEntity.internalServerError().build();
         }
+
 
         return  ResponseEntity.notFound().build();
     }
@@ -91,4 +98,12 @@ public class ReservationController {
         }
         return ResponseEntity.notFound().build();
     }
+
+
+    @GetMapping("/categoryStatistic")
+    @Operation(summary = "Get statistics per category", description = "Get number of reservations per category.")
+    public List<CategoryReservationStatistic>getCategoryStatistic(){
+        return reservationService.categoryReservationStatistic();
+    }
+
 }

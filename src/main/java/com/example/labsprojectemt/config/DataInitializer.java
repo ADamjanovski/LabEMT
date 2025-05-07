@@ -33,12 +33,10 @@ public class DataInitializer {
     }
 
 
-    @PostConstruct
     public void init() {
         countryRepository.save(new Country("Macedonia","Europe"));
         countryRepository.save(new Country("Japan","Asia"));
         countryRepository.save(new Country("Canada","America"));
-
 
         //        categoryRepository.save(new Category("Food", "Food category"));
 //        categoryRepository.save(new Category("Music", "Music category"));

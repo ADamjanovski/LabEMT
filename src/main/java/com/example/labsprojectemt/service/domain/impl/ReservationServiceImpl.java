@@ -1,6 +1,8 @@
 package com.example.labsprojectemt.service.domain.impl;
 
 import com.example.labsprojectemt.domain.Reservation;
+import com.example.labsprojectemt.domain.dto.CategoryReservationStatistic;
+import com.example.labsprojectemt.domain.enumerations.Category;
 import com.example.labsprojectemt.domain.enumerations.ReservationStatus;
 import com.example.labsprojectemt.repository.ReservationRepository;
 import com.example.labsprojectemt.service.domain.ReservationService;
@@ -9,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +27,9 @@ public class ReservationServiceImpl  implements ReservationService {
     @Override
     public Optional<Reservation> save(Reservation reservation) {
         reservation.setStatus(ReservationStatus.CONFIRMED);
-
+        if(reservationRepository.findIfReserved(reservation.getAccommodation().getId(),reservation.getStartDate(),reservation.getEndDate()).isPresent()){
+            throw new AccommodationAlreadyReserved();
+        }
         return Optional.of(reservationRepository.save(reservation));
     }
 
@@ -70,5 +75,19 @@ public class ReservationServiceImpl  implements ReservationService {
     @Override
     public boolean isReserved(Long id,LocalDate startDate, LocalDate endDate) {
         return false;
+    }
+
+    @Override
+    public List<CategoryReservationStatistic> categoryReservationStatistic() {
+        List<Object[]> stats = reservationRepository.groupByCategoryStatistic();
+        List<CategoryReservationStatistic> statistics=new ArrayList<>();
+        for (Object[] result : stats) {
+            Category category = (Category) result[0];
+            Long count = (Long) result[1];
+            statistics.add(CategoryReservationStatistic.from(category.name(), count));
+
+
+        }
+        return statistics;
     }
 }

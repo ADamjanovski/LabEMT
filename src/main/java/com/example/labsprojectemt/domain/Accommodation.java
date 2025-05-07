@@ -1,5 +1,6 @@
 package com.example.labsprojectemt.domain;
 
+import com.example.labsprojectemt.domain.enumerations.Category;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -7,14 +8,6 @@ import lombok.Data;
 @Entity
 public class Accommodation {
 
-    public enum Category{
-        ROOM,
-        HOUSE,
-        FLAT,
-        APARTMENT,
-        HOTEL,
-        MOTEL
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

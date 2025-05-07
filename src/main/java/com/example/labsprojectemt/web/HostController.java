@@ -3,6 +3,8 @@ package com.example.labsprojectemt.web;
 
 import com.example.labsprojectemt.domain.dto.CreateHostDto;
 import com.example.labsprojectemt.domain.dto.DisplayHostDto;
+import com.example.labsprojectemt.domain.projections.HostProjection;
+import com.example.labsprojectemt.domain.views.HostsPerCountryView;
 import com.example.labsprojectemt.service.application.CountryApplicationService;
 import com.example.labsprojectemt.service.application.HostApplicationService;
 import com.example.labsprojectemt.service.domain.CountryService;
@@ -41,6 +43,16 @@ public class HostController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Get num hosts per country", description = "Get num hosts per country")
+    @GetMapping("/by-country")
+    public List<HostsPerCountryView> findNumHostsPerCountry() {
+        return hostService.findNumHostsPerCountry();
+    }
+    @Operation(summary = "Get projection", description = "Get projection for host name and surname")
+    @GetMapping("/names")
+    public List<HostProjection> findAllProjections() {
+        return hostService.findAllProjections();
+    }
     @Operation(
             summary = "Add a new product",
             description = "Creates a new product based on the given ProductDto."

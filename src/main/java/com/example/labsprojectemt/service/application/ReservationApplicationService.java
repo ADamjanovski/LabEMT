@@ -2,6 +2,7 @@ package com.example.labsprojectemt.service.application;
 
 import com.example.labsprojectemt.domain.Reservation;
 import com.example.labsprojectemt.domain.User;
+import com.example.labsprojectemt.domain.dto.CategoryReservationStatistic;
 import com.example.labsprojectemt.domain.dto.CreateReservationDto;
 import com.example.labsprojectemt.domain.dto.DisplayReservationDto;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,4 +24,6 @@ public interface ReservationApplicationService {
     void deleteById(Long id);
     Optional<DisplayReservationDto> confirmReservation(Long reservationId);
     Optional<DisplayReservationDto> makeTemporaryReservation(CreateReservationDto reservation,User user);
+    List<CategoryReservationStatistic> categoryReservationStatistic();
+
 }

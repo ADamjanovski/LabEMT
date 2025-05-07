@@ -2,6 +2,7 @@ package com.example.labsprojectemt.service.application.impl;
 
 import com.example.labsprojectemt.domain.dto.CreateAccommodationDto;
 import com.example.labsprojectemt.domain.dto.DisplayAccommodationDto;
+import com.example.labsprojectemt.domain.views.AccommodationsPerHostView;
 import com.example.labsprojectemt.service.application.AccommodationApplicationService;
 import com.example.labsprojectemt.service.application.HostApplicationService;
 import com.example.labsprojectemt.service.domain.AccommodationService;
@@ -51,5 +52,10 @@ public class AccommodationAppServiceImpl implements AccommodationApplicationServ
     @Override
     public List<DisplayAccommodationDto> findAll() {
         return DisplayAccommodationDto.from(accommodationService.findAll());
+    }
+
+    @Override
+    public List<AccommodationsPerHostView> findAllAccommodationsByHost() {
+        return accommodationService.findAllAccommodationsByHost();
     }
 }

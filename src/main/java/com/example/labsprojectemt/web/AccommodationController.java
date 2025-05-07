@@ -2,6 +2,7 @@ package com.example.labsprojectemt.web;
 
 import com.example.labsprojectemt.domain.dto.CreateAccommodationDto;
 import com.example.labsprojectemt.domain.dto.DisplayAccommodationDto;
+import com.example.labsprojectemt.domain.views.AccommodationsPerHostView;
 import com.example.labsprojectemt.service.application.AccommodationApplicationService;
 import com.example.labsprojectemt.service.domain.AccommodationService;
 import com.example.labsprojectemt.service.domain.HostService;
@@ -42,6 +43,13 @@ public class AccommodationController {
                                                     LocalDate endDate
     ) {
         return accommodationService.availableAccommodation(startDate,endDate);
+    }
+
+    @Operation(summary = "Get num accommodations per host", description = "Retrieves a list of num accommodations by hosts.")
+    @GetMapping("/by-host")
+    public List<AccommodationsPerHostView> findNumAccommodationsByHost(
+    ) {
+        return accommodationService.findAllAccommodationsByHost();
     }
     @Operation(summary = "Get product by ID", description = "Finds a product by its ID.")
     @GetMapping("/{id}")

@@ -3,7 +3,9 @@ package com.example.labsprojectemt.service.domain.impl;
 import com.example.labsprojectemt.domain.Accommodation;
 import com.example.labsprojectemt.domain.Host;
 import com.example.labsprojectemt.domain.dto.CreateAccommodationDto;
+import com.example.labsprojectemt.domain.views.AccommodationsPerHostView;
 import com.example.labsprojectemt.repository.AccommodationRepository;
+import com.example.labsprojectemt.repository.AccommodationsPerHostViewRepository;
 import com.example.labsprojectemt.service.domain.AccommodationService;
 import com.example.labsprojectemt.service.domain.HostService;
 import com.example.labsprojectemt.service.domain.ReservationService;
@@ -21,11 +23,13 @@ public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationRepository accommodationRepository;
     private final HostService hostService;
     private final ReservationService reservationService;
+    private final AccommodationsPerHostViewRepository accommodationsPerHostViewRepository;
 
-    public AccommodationServiceImpl(AccommodationRepository accommodationRepository, HostService hostService, ReservationService reservationService) {
+    public AccommodationServiceImpl(AccommodationRepository accommodationRepository, HostService hostService, ReservationService reservationService, AccommodationsPerHostViewRepository accommodationsPerHostViewRepository) {
         this.accommodationRepository = accommodationRepository;
         this.hostService = hostService;
         this.reservationService = reservationService;
+        this.accommodationsPerHostViewRepository = accommodationsPerHostViewRepository;
     }
 
     @Override
@@ -68,6 +72,11 @@ public class AccommodationServiceImpl implements AccommodationService {
     @Override
     public List<Accommodation> findAll() {
         return accommodationRepository.findAll();
+    }
+
+    @Override
+    public List<AccommodationsPerHostView> findAllAccommodationsByHost() {
+        return accommodationsPerHostViewRepository.findAll();
     }
 
 

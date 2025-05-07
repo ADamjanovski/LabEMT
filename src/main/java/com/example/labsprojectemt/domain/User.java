@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,9 +20,6 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String username;
     private String password;
 
@@ -29,7 +27,8 @@ public class User implements UserDetails {
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
-    @OneToMany
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @Where(clause = "status = 'CONFIRMED'")
     private List<Reservation> reservations;
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;
@@ -100,9 +99,6 @@ public class User implements UserDetails {
         return isEnabled;
     }
 
-    public Long getId() {
-        return id;
-    }
 
     public String getName() {
         return name;

@@ -2,6 +2,7 @@ package com.example.labsprojectemt.service.application.impl;
 
 import com.example.labsprojectemt.domain.Reservation;
 import com.example.labsprojectemt.domain.User;
+import com.example.labsprojectemt.domain.dto.CategoryReservationStatistic;
 import com.example.labsprojectemt.domain.dto.CreateReservationDto;
 import com.example.labsprojectemt.domain.dto.DisplayReservationDto;
 import com.example.labsprojectemt.service.application.ReservationApplicationService;
@@ -68,4 +69,11 @@ public class ReservationAppImplService implements ReservationApplicationService 
                         toReservation(accommodationService.findById(reservation.accommodation()).get(),
                 user)).map(DisplayReservationDto::from);
     }
+
+    @Override
+    public List<CategoryReservationStatistic> categoryReservationStatistic() {
+        return reservationService.categoryReservationStatistic();
+    }
+
+
 }

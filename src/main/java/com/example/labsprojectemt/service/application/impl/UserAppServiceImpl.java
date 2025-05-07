@@ -1,8 +1,11 @@
 package com.example.labsprojectemt.service.application.impl;
 
+import com.example.labsprojectemt.domain.User;
 import com.example.labsprojectemt.domain.dto.CreateUserDto;
 import com.example.labsprojectemt.domain.dto.DisplayUserDto;
+import com.example.labsprojectemt.domain.dto.LoginResponseDto;
 import com.example.labsprojectemt.domain.dto.LoginUserDto;
+import com.example.labsprojectemt.security.JwtHelper;
 import com.example.labsprojectemt.service.application.UserApplicationService;
 import com.example.labsprojectemt.service.domain.UserService;
 import org.springframework.stereotype.Service;
@@ -15,9 +18,11 @@ import java.util.stream.Collectors;
 public class UserAppServiceImpl implements UserApplicationService {
 
     private final UserService userService;
+    private final JwtHelper jwtHelper;
 
-    public UserAppServiceImpl(UserService userService) {
+    public UserAppServiceImpl(UserService userService, JwtHelper jwtHelper) {
         this.userService = userService;
+        this.jwtHelper = jwtHelper;
     }
 
     @Override
@@ -41,11 +46,15 @@ public class UserAppServiceImpl implements UserApplicationService {
     }
 
     @Override
-    public Optional<DisplayUserDto> login(LoginUserDto loginUserDto) {
-        return Optional.of(DisplayUserDto.from(userService.login(
+    public Optional<LoginResponseDto> login(LoginUserDto loginUserDto) {
+        User user = userService.login(
                 loginUserDto.username(),
                 loginUserDto.password()
-        )));
+        );
+
+        String token = jwtHelper.generateToken(user);
+
+        return Optional.of(new LoginResponseDto(token));
 
     }
 }

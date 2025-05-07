@@ -3,6 +3,7 @@ package com.example.labsprojectemt.service.application;
 import com.example.labsprojectemt.domain.User;
 import com.example.labsprojectemt.domain.dto.CreateUserDto;
 import com.example.labsprojectemt.domain.dto.DisplayUserDto;
+import com.example.labsprojectemt.domain.dto.LoginResponseDto;
 import com.example.labsprojectemt.domain.dto.LoginUserDto;
 
 import java.util.List;
@@ -18,7 +19,6 @@ public interface UserApplicationService {
     Optional<DisplayUserDto> findById(Long id);
 
     void deleteById(Long id);
-    Optional<DisplayUserDto> login(LoginUserDto loginUserDto);
-
+    Optional<LoginResponseDto> login(LoginUserDto loginUserDto);
 
 }

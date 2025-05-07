@@ -1,6 +1,7 @@
 package com.example.labsprojectemt.service.domain;
 
 import com.example.labsprojectemt.domain.Reservation;
+import com.example.labsprojectemt.domain.dto.CategoryReservationStatistic;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -22,4 +23,5 @@ public interface ReservationService {
     Optional<Reservation> makeTemporaryReservation(Reservation reservation);
     boolean isReserved(Long id,LocalDate startDate,LocalDate endDate);
 
+    List<CategoryReservationStatistic> categoryReservationStatistic();
 }

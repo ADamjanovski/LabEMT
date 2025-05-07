@@ -2,6 +2,9 @@ package com.example.labsprojectemt.service.application.impl;
 
 import com.example.labsprojectemt.domain.dto.CreateHostDto;
 import com.example.labsprojectemt.domain.dto.DisplayHostDto;
+import com.example.labsprojectemt.domain.projections.HostProjection;
+import com.example.labsprojectemt.domain.views.HostsPerCountryView;
+import com.example.labsprojectemt.repository.HostsPerCountryViewRepository;
 import com.example.labsprojectemt.service.application.HostApplicationService;
 import com.example.labsprojectemt.service.domain.CountryService;
 import com.example.labsprojectemt.service.domain.HostService;
@@ -40,5 +43,15 @@ public class HostAppImplService implements HostApplicationService {
     @Override
     public void deleteById(Long id) {
         hostService.deleteById(id);
+    }
+
+    @Override
+    public List<HostsPerCountryView> findNumHostsPerCountry() {
+        return hostService.findNumHostsPerCountry();
+    }
+
+    @Override
+    public List<HostProjection> findAllProjections() {
+        return hostService.findAllProjections();
     }
 }

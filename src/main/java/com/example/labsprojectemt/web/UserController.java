@@ -2,6 +2,7 @@ package com.example.labsprojectemt.web;
 
 import com.example.labsprojectemt.domain.dto.CreateUserDto;
 import com.example.labsprojectemt.domain.dto.DisplayUserDto;
+import com.example.labsprojectemt.domain.dto.LoginResponseDto;
 import com.example.labsprojectemt.domain.dto.LoginUserDto;
 import com.example.labsprojectemt.service.application.UserApplicationService;
 import com.example.labsprojectemt.service.exceptions.InvalidUserCredentialsException;
@@ -50,14 +51,11 @@ public class UserController {
                 ), @ApiResponse(responseCode = "404", description = "Invalid username or password")}
         )
         @PostMapping("/login")
-        public ResponseEntity<DisplayUserDto> login(HttpServletRequest request) {
+        public ResponseEntity<LoginResponseDto> login(@RequestBody LoginUserDto loginUserDto) {
             try {
-                DisplayUserDto displayUserDto = userApplicationService.login(
-                        new LoginUserDto(request.getParameter("username"), request.getParameter("password"))
-                ).orElseThrow(InvalidUserCredentialsException::new);
-
-                request.getSession().setAttribute("user", displayUserDto.toUser());
-                return ResponseEntity.ok(displayUserDto);
+                return userApplicationService.login(loginUserDto)
+                        .map(ResponseEntity::ok)
+                        .orElseThrow(InvalidUserCredentialsException::new);
             } catch (InvalidUserCredentialsException e) {
                 return ResponseEntity.notFound().build();
             }

@@ -2,6 +2,7 @@ package com.example.labsprojectemt.service.domain;
 
 import com.example.labsprojectemt.domain.Accommodation;
 import com.example.labsprojectemt.domain.dto.CreateAccommodationDto;
+import com.example.labsprojectemt.domain.views.AccommodationsPerHostView;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -21,4 +22,5 @@ public interface AccommodationService {
     Optional<Accommodation> findById(Long id);
 
     List<Accommodation> findAll();
+    List<AccommodationsPerHostView> findAllAccommodationsByHost();
 }
